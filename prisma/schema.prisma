@@ -1,0 +1,148 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id               String              @id
+  registerAt       DateTime            @default(now())
+  privacy          PrivacyLevel        @default(ALL_SAVES)
+  requests         RequestLog[]
+  conversations    ConversationLog[]
+  themesDetections ThemeDetectionLog[]
+  premium          Boolean             @default(false)
+  dailyUsage       Int                 @default(0)
+  monthlyUsage     Int                 @default(0)
+  lastUsage        DateTime            @default(now())
+  coins            Int                 @default(0)
+  token            ApiToken[]
+  prefModel        Model               @default(GPT35)
+  language         String?
+  PremiumUser      PremiumUser?
+
+  @@map("users")
+}
+
+model PremiumUser {
+  id                 String   @id
+  startedOn          DateTime @default(now())
+  languageIntonation String?
+  user               User     @relation(fields: [id], references: [id])
+  endAt              DateTime
+}
+
+model ThemeDetectionLog {
+  id            String  @id
+  message       String
+  result        String
+  userId        String
+  user          User    @relation(fields: [userId], references: [id])
+  usedTokens    Int
+  success       Boolean
+  error         String?
+  promptVersion String
+}
+
+model RequestLog {
+  id         String  @id
+  message    String
+  theme      String
+  userId     String
+  user       User    @relation(fields: [userId], references: [id])
+  response   String
+  appVersion String
+  usedTokens Int
+  success    Boolean
+  error      String?
+}
+
+model ConversationLog {
+  id          String             @id
+  message     String
+  theme       String
+  resultType  ConversationResult
+  results     String
+  action      Action?
+  userId      String
+  user        User               @relation(fields: [userId], references: [id])
+  requestsIds String[]
+  appVersion  String
+  usedTokens  Int
+  success     Boolean
+  error       String?
+}
+
+model ApiToken {
+  key    String       @unique
+  type   ApiTokenType
+  userId String
+  user   User         @relation(fields: [userId], references: [id])
+}
+
+model Guild {
+  id           String              @id
+  name         String
+  owner        String
+  premium      Boolean             @default(false)
+  PremiumGuild PremiumGuild?
+  customAssist CustomGuildAssist[]
+}
+
+model PremiumGuild {
+  id    String     @id
+  guild Guild      @relation(fields: [id], references: [id])
+  bot   CustomBot?
+}
+
+model CustomGuildAssist {
+  id      String @id
+  guildId String
+  guild   Guild  @relation(fields: [guildId], references: [id])
+}
+
+model CustomBot {
+  id           String       @id
+  premiumGuild PremiumGuild @relation(fields: [id], references: [id])
+  token        String
+}
+
+enum ApiTokenType {
+  FREE
+  PREMIUM
+}
+
+enum ConversationResult {
+  MESSAGE
+  ACTION
+  ERROR
+}
+
+enum Action {
+  BAN
+  UNBAN
+  TEMPBAN
+  MUTE
+  UNMUTE
+  KICK
+  RENAME_USER
+}
+
+enum PrivacyStatus {
+  ACCEPTED
+  REFUSED
+  WAITING
+}
+
+enum PrivacyLevel {
+  ALL_SAVES
+  ANONYMES
+}
+
+enum Model {
+  GPT35
+  GPT4
+}
