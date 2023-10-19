@@ -9,18 +9,18 @@ datasource db {
 
 model User {
   id               String              @id
-  registerAt       DateTime            @default(now())
+  registerAt       DateTime            @default(now()) @map("register_at")
   privacy          PrivacyLevel        @default(ALL_SAVES)
   requests         RequestLog[]
   conversations    ConversationLog[]
   themesDetections ThemeDetectionLog[]
   premium          Boolean             @default(false)
-  dailyUsage       Int                 @default(0)
-  monthlyUsage     Int                 @default(0)
-  lastUsage        DateTime            @default(now())
+  dailyUsage       Int                 @default(0) @map("daily_usage")
+  monthlyUsage     Int                 @default(0) @map("monthly_usage")
+  lastUsage        DateTime            @default(now()) @map("last_usage")
   coins            Int                 @default(0)
   token            ApiToken[]
-  prefModel        Model               @default(GPT35)
+  prefModel        Model               @default(GPT35) @map("pref_model")
   language         String?
   PremiumUser      PremiumUser?
 
@@ -29,35 +29,42 @@ model User {
 
 model PremiumUser {
   id                 String   @id
-  startedOn          DateTime @default(now())
+  startedOn          DateTime @default(now()) @map("started_on")
   languageIntonation String?
   user               User     @relation(fields: [id], references: [id])
-  endAt              DateTime
+  endAt              DateTime @map("end_at")
+
+  @@map("premium_users")
 }
 
 model ThemeDetectionLog {
   id            String  @id
   message       String
   result        String
-  userId        String
+  userId        String  @map("user_id")
   user          User    @relation(fields: [userId], references: [id])
-  usedTokens    Int
+  usedTokens    Int     @map("used_tokens")
   success       Boolean
   error         String?
-  promptVersion String
+  promptName    String  @map("prompt_name")
+  promptVersion String  @map("prompt_version")
+
+  @@map("theme_detection_logs")
 }
 
 model RequestLog {
   id         String  @id
   message    String
   theme      String
-  userId     String
+  userId     String  @map("user_id")
   user       User    @relation(fields: [userId], references: [id])
   response   String
-  appVersion String
-  usedTokens Int
+  appVersion String  @map("app_version")
+  usedTokens Int     @map("used_tokens")
   success    Boolean
   error      String?
+
+  @@map("request_logs")
 }
 
 model ConversationLog {
@@ -67,20 +74,24 @@ model ConversationLog {
   resultType  ConversationResult
   results     String
   action      Action?
-  userId      String
+  userId      String             @map("user_id")
   user        User               @relation(fields: [userId], references: [id])
-  requestsIds String[]
-  appVersion  String
-  usedTokens  Int
+  requestsIds String[]           @map("requests_ids")
+  appVersion  String             @map("app_version")
+  usedTokens  Int                @map("used_tokens")
   success     Boolean
   error       String?
+
+  @@map("conversation_logs")
 }
 
 model ApiToken {
   key    String       @unique
   type   ApiTokenType
-  userId String
+  userId String       @map("user_id")
   user   User         @relation(fields: [userId], references: [id])
+
+  @@map("api_tokens")
 }
 
 model Guild {
@@ -90,24 +101,43 @@ model Guild {
   premium      Boolean             @default(false)
   PremiumGuild PremiumGuild?
   customAssist CustomGuildAssist[]
+
+  @@map("guilds")
 }
 
 model PremiumGuild {
   id    String     @id
   guild Guild      @relation(fields: [id], references: [id])
   bot   CustomBot?
+
+  @@map("premium_guilds")
 }
 
 model CustomGuildAssist {
   id      String @id
-  guildId String
+  guildId String @map("guild_id")
   guild   Guild  @relation(fields: [guildId], references: [id])
+
+  @@map("custom_guild_assists")
 }
 
 model CustomBot {
   id           String       @id
   premiumGuild PremiumGuild @relation(fields: [id], references: [id])
   token        String
+
+  @@map("custom_bots")
+}
+
+model Prompt {
+  name       String
+  version    Int
+  status     PromptStatus
+  value      String
+  createDate DateTime     @default(now()) @map("create_date")
+
+  @@id([name, version])
+  @@map("prompts")
 }
 
 enum ApiTokenType {
@@ -145,4 +175,11 @@ enum PrivacyLevel {
 enum Model {
   GPT35
   GPT4
+}
+
+enum PromptStatus {
+  ALPHA
+  BETA
+  PROD
+  INVALID
 }
