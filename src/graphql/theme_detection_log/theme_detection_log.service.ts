@@ -1,15 +1,16 @@
-import { Injectable } from '@nestjs/common';
-import { CreateThemeDetectionLogInput } from './dto/create-theme_detection_log.input';
-import { UpdateThemeDetectionLogInput } from './dto/update-theme_detection_log.input';
+import { Injectable } from "@nestjs/common";
+import type { CreateThemeDetectionLogInput } from "./dto/create-theme_detection_log.input";
+import type { UpdateThemeDetectionLogInput } from "./dto/update-theme_detection_log.input";
 
 @Injectable()
 export class ThemeDetectionLogService {
+
   create(createThemeDetectionLogInput: CreateThemeDetectionLogInput) {
-    return 'This action adds a new themeDetectionLog';
+    return "This action adds a new themeDetectionLog";
   }
 
   findAll() {
-    return `This action returns all themeDetectionLog`;
+    return "This action returns all themeDetectionLog";
   }
 
   findOne(id: number) {
@@ -23,4 +24,5 @@ export class ThemeDetectionLogService {
   remove(id: number) {
     return `This action removes a #${id} themeDetectionLog`;
   }
+
 }

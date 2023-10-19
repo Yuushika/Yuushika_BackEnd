@@ -1,7 +1,9 @@
-import { InputType, Int, Field } from '@nestjs/graphql';
+import { InputType, Int, Field } from "@nestjs/graphql";
 
 @InputType()
 export class CreateRequestLogInput {
-  @Field(() => Int, { description: 'Example field (placeholder)' })
-  exampleField: number;
+
+  @Field(() => Int, { description: "Example field (placeholder)" })
+    exampleField: number;
+
 }

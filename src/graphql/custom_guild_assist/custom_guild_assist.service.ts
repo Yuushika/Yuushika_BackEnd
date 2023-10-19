@@ -1,15 +1,16 @@
-import { Injectable } from '@nestjs/common';
-import { CreateCustomGuildAssistInput } from './dto/create-custom_guild_assist.input';
-import { UpdateCustomGuildAssistInput } from './dto/update-custom_guild_assist.input';
+import { Injectable } from "@nestjs/common";
+import type { CreateCustomGuildAssistInput } from "./dto/create-custom_guild_assist.input";
+import type { UpdateCustomGuildAssistInput } from "./dto/update-custom_guild_assist.input";
 
 @Injectable()
 export class CustomGuildAssistService {
+
   create(createCustomGuildAssistInput: CreateCustomGuildAssistInput) {
-    return 'This action adds a new customGuildAssist';
+    return "This action adds a new customGuildAssist";
   }
 
   findAll() {
-    return `This action returns all customGuildAssist`;
+    return "This action returns all customGuildAssist";
   }
 
   findOne(id: number) {
@@ -23,4 +24,5 @@ export class CustomGuildAssistService {
   remove(id: number) {
     return `This action removes a #${id} customGuildAssist`;
   }
+
 }

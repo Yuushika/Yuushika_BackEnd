@@ -9,7 +9,6 @@ module.exports = {
   extends: [
     '@arcoz',
     'plugin:@typescript-eslint/recommended',
-    'plugin:prettier/recommended',
   ],
   root: true,
   env: {

@@ -1,12 +1,13 @@
-import {ObjectType, Field, Int, ID} from '@nestjs/graphql';
+import { ObjectType, Field, Int, ID } from "@nestjs/graphql";
 
 @ObjectType()
 export class PremiumUser {
+
   @Field(type => ID)
-  id: string;
+    id: string;
 
   @Field()
-  startedOn: Date
+    startedOn: Date;
 
 
 }

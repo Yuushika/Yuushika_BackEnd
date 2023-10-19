@@ -1,15 +1,16 @@
-import { Injectable } from '@nestjs/common';
-import { CreatePremiumUserInput } from './dto/create-premium_user.input';
-import { UpdatePremiumUserInput } from './dto/update-premium_user.input';
+import { Injectable } from "@nestjs/common";
+import type { CreatePremiumUserInput } from "./dto/create-premium_user.input";
+import type { UpdatePremiumUserInput } from "./dto/update-premium_user.input";
 
 @Injectable()
 export class PremiumUsersService {
+
   create(createPremiumUserInput: CreatePremiumUserInput) {
-    return 'This action adds a new premiumUser';
+    return "This action adds a new premiumUser";
   }
 
   findAll() {
-    return `This action returns all premiumUsers`;
+    return "This action returns all premiumUsers";
   }
 
   findOne(id: number) {
@@ -23,4 +24,5 @@ export class PremiumUsersService {
   remove(id: number) {
     return `This action removes a #${id} premiumUser`;
   }
+
 }

@@ -1,15 +1,16 @@
-import { Injectable } from '@nestjs/common';
-import { CreateGuildInput } from './dto/create-guild.input';
-import { UpdateGuildInput } from './dto/update-guild.input';
+import { Injectable } from "@nestjs/common";
+import type { CreateGuildInput } from "./dto/create-guild.input";
+import type { UpdateGuildInput } from "./dto/update-guild.input";
 
 @Injectable()
 export class GuildService {
+
   create(createGuildInput: CreateGuildInput) {
-    return 'This action adds a new guild';
+    return "This action adds a new guild";
   }
 
   findAll() {
-    return `This action returns all guild`;
+    return "This action returns all guild";
   }
 
   findOne(id: number) {
@@ -23,4 +24,5 @@ export class GuildService {
   remove(id: number) {
     return `This action removes a #${id} guild`;
   }
+
 }

@@ -1,54 +1,56 @@
-import {ObjectType, Field, Int, ID} from '@nestjs/graphql';
-import {PrivacyLevel, Model} from '@prisma/client'
-import {PremiumUser} from "../../premium_users/entities/premium_user.entity";
+import { ObjectType, Field, Int, ID } from "@nestjs/graphql";
+import { PrivacyLevel, Model } from "@prisma/client";
+import { PremiumUser } from "../../premium_users/entities/premium_user.entity";
 
 @ObjectType()
 export class User {
+
   @Field(type => ID)
-  id: string;
+    id: string;
 
   @Field()
-  registerAt: Date;
+    registerAt: Date;
 
   @Field(type => PrivacyLevel, {
-    defaultValue: 'ALL_SAVES',
+    defaultValue: "ALL_SAVES",
 
   })
-  privacy: PrivacyLevel;
+    privacy: PrivacyLevel;
 
   @Field({
     defaultValue: false,
   })
-  premium: boolean;
+    premium: boolean;
 
   @Field(type => Int, {
-    defaultValue: 0
+    defaultValue: 0,
   })
-  dailyUsage: number;
+    dailyUsage: number;
 
   @Field(type => Int, {
-    defaultValue: 0
+    defaultValue: 0,
   })
-  monthlyUsage: number;
+    monthlyUsage: number;
 
   @Field()
-  lastUsage: Date;
+    lastUsage: Date;
 
   @Field(type => Int)
-  coins: number;
+    coins: number;
 
   @Field(type => Model, {
-    defaultValue: 'GPT35'
+    defaultValue: "GPT35",
   })
-  prefModel: Model;
+    prefModel: Model;
 
   @Field({
-    nullable: true
+    nullable: true,
   })
-  language?: string;
+    language?: string;
 
   @Field({
-    nullable: true
+    nullable: true,
   })
-  premiumUser?: PremiumUser;
+    premiumUser?: PremiumUser;
+
 }
